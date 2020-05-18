@@ -2,7 +2,7 @@ package ycx.picencrypt;
 import java.util.*;
 public class MyAlgorithms {
 	//加解密时使用，选择法排序，同时生成地址映射表
-		static void SelectSort(double arr[], int length, HashMap m, int address_arr[])
+		static void SelectSort(double arr[], int length, HashMap<Double, Integer> m, int address_arr[])
 		{
 			if (arr == null || length <= 0)return;
 			int index = 0;
@@ -14,16 +14,14 @@ public class MyAlgorithms {
 					if (arr[j] < arr[index])index = j;
 				}
 				if (index != i)
-					{
-					//swap(arr[i], arr[index]);
+				{
 					double temp;
 					temp=arr[i];
 					arr[i]=arr[index];
 					arr[index]=temp;
-					}
+				}
 				
-				int address=Integer.parseInt(String.valueOf(m.get(arr[i]))); 
-				//int address=(int)m.get(arr[i]);
+				int address=m.get(arr[i]); 
 				address_arr[address] = i;
 
 				/*
@@ -51,18 +49,15 @@ public class MyAlgorithms {
 			arr[0] = x;
 			for (int i = 1; i < N; ++i)
 			{
-				//arr[i] = 1 - 2*(arr[i - 1] * arr[i - 1]);
 				arr[i] = u*arr[i - 1] * (1 - arr[i - 1]);
 			}
 		}
 
 		//通过混沌序列，生成 值-下标 的反向映射
-		static void produce_map(HashMap m, double logistic_array[], int N)
+		static void produce_map(HashMap<Double, Integer> m, double logistic_array[], int N)
 		{
 			for (int i = 0; i < N; ++i)
 			{
-//				pair<double, int >p = make_pair(logistic_array[i], i);
-//				m.insert(p);
 				m.put(logistic_array[i], i);
 			}
 
@@ -75,7 +70,7 @@ public class MyAlgorithms {
 			double logistic_array[] = new double[N] ;
 			produce_logisticArray(x1, logistic_array, N);
 			//建立值与下标映射的Map
-			HashMap m=new HashMap<String , Double>();  
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
 			produce_map(m, logistic_array, N);
 			//拷贝混沌序列
 			double temp_logArr[]=new double[N];
@@ -84,7 +79,6 @@ public class MyAlgorithms {
 			int address_array[]=new int[N];
 			//对混沌序列进行排序，采用选择，并且同时生产地址映射表
 			SelectSort(temp_logArr, N, m, address_array);
-			//QSort(temp_logArr, N, m, 0, N - 1, address_array);
 
 			//用一个暂存数组保存被置乱后的象素数组
 			int temp[]=new int[N];
@@ -117,7 +111,7 @@ public class MyAlgorithms {
 			double logistic_array[]=new double[N];
 			produce_logisticArray(x1, logistic_array, N);
 			//建立值与下标映射的Map
-			HashMap m=new HashMap<String , Double>();  
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
 			produce_map(m, logistic_array, N);
 			//拷贝混沌序列
 			double temp_logArr[]=new double[N];
@@ -181,7 +175,7 @@ public class MyAlgorithms {
 			double logistic_array[]=new double[N];
 			produce_logisticArray(x1, logistic_array, N);
 			//建立值与下标映射的Map
-			HashMap m=new HashMap<String , Double>();  
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
 			produce_map(m, logistic_array, N);
 			//拷贝混沌序列
 			double temp_logArr[]=new double[N];
@@ -220,7 +214,7 @@ public class MyAlgorithms {
 			double logistic_array[]=new double[N];
 			produce_logisticArray(x1, logistic_array, N);
 			//建立值与下标映射的Map
-			HashMap m=new HashMap<String , Double>();  
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
 			produce_map(m, logistic_array, N);
 			//拷贝混沌序列
 			double temp_logArr[]=new double[N];

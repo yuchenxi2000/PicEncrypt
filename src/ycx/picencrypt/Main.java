@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Main {
 	
-	static void image_transform(double key, File fi, File fo, Boolean encrypt) {
+	static void image_transform(double key, File fi, File fo, Boolean encrypt, String mode) {
 		try {
 			BufferedImage bi = ImageIO.read(fi);
 			int h = bi.getHeight();
@@ -23,9 +23,35 @@ public class Main {
 			// 解密
 			MyAlgorithms ma = new MyAlgorithms();
 			if (encrypt) {
-				ma.encrypt(buffer_2d, key, h, w);
+				switch (mode) {
+				case "rc":
+					ma.encrypt(buffer_2d, key, h, w);
+					break;
+				case "r":
+					ma.rowEncrypt_interface(buffer_2d, key, h, w);
+					break;
+				case "c":
+					ma.columnEncrypt_interface(buffer_2d, key, h, w);
+					break;
+				default:
+					System.out.println("未知的模式，可能的模式：r/c/rc");
+					return;
+				}
 			} else {
-				ma.decrypt(buffer_2d, key, h, w);
+				switch (mode) {
+				case "rc":
+					ma.decrypt(buffer_2d, key, h, w);
+					break;
+				case "r":
+					ma.rowDecrypt_interface(buffer_2d, key, h, w);
+					break;
+				case "c":
+					ma.columnDecrypt_interface(buffer_2d, key, h, w);
+					break;
+				default:
+					System.out.println("未知的模式，可能的模式：r/c/rc");
+					return;
+				}
 			}
 			
 			// 二维转一维
@@ -41,8 +67,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		Boolean encrypt = true;
-		double key = 0.0;
+		double key = 0.1;
 		File fi = null, fo = null;
+		String mode = "rc";
 		for (int i = 0; i < args.length; i++) {
 			switch (args[i]) {
 			case "-d":
@@ -66,6 +93,11 @@ public class Main {
 					fo = new File(args[i]);
 				}
 				break;
+			case "-m":
+				if (++i < args.length) {
+					mode = args[i];
+				}
+				break;
 			case "-h":
 				System.out.println("安卓App picencript 的 java 移植版");
 				System.out.println("命令行参数:");
@@ -74,6 +106,7 @@ public class Main {
 				System.out.println("-k: 后面跟密钥");
 				System.out.println("-i: 后面跟输入图片路径");
 				System.out.println("-o: 后面跟输出图片路径");
+				System.out.println("-m: 加密/解密模式，r/c/rc（行/列/行列），默认行列");
 				System.out.println("-h: 打印帮助然后退出");
 				return;
 			}
@@ -86,7 +119,7 @@ public class Main {
 			System.out.println("输出图片路径为空");
 			return;
 		}
-		image_transform(key, fi, fo, encrypt);
+		image_transform(key, fi, fo, encrypt, mode);
 		return;
 	}
 
