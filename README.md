@@ -15,28 +15,33 @@ No！
 ## 使用方法
 下载 bin/picencrypt.jar
 
-加密：
+加密（默认行加密，密钥0.1）：
 ``` shell
-java -jar picencrypt.jar -e -k 0.1 -i test.png -o test_e.png
+java -jar picencrypt.jar -e -i test.png -o test_e.png
 ```
 
-解密：
+加密，指定密钥0.2，使用行列加密：
 ``` shell
-java -jar picencrypt.jar -d -k 0.1 -i test_e.png -o test_d.png
+java -jar picencrypt.jar -e -k 0.2 -m rc -i test.png -o test_e.png
 ```
 
-行解密：
+解密（默认解密而且是行解密，密钥0.1）：
 ``` shell
-java -jar picencrypt.jar -d -k 0.1 -i test_e.png -o test_d.png -m r
+java -jar picencrypt.jar -i test_e.png -o test_d.png
+```
+
+解密，加密方式行列，指定密钥0.3：
+``` shell
+java -jar picencrypt.jar -d -k 0.3 -i test_e.png -o test_d.png -m rc
 ```
 
 ## 命令行参数
 * -e: 加密
-* -d: 解密
-* -k: 后面跟密钥
+* -d: 解密（默认）
+* -k: 后面跟密钥，默认0.1
 * -i: 后面跟输入图片路径
 * -o: 后面跟输出图片路径
-* -m: 加密/解密模式，r/c/rc（行/列/行列），默认行列
+* -m: 后面跟加密/解密模式，r/rc（行/行列），默认行
 * -h: 打印帮助然后退出
 
 ## 原安卓App
