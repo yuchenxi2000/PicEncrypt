@@ -28,13 +28,10 @@ public class Main {
 					ma.encrypt(buffer_2d, key, h, w);
 					break;
 				case "r":
-					ma.rowEncrypt_interface(buffer_2d, key, h, w);
-					break;
-				case "c":
-					ma.columnEncrypt_interface(buffer_2d, key, h, w);
+					ma.allRowEncrypt(buffer_2d, key, h, w);
 					break;
 				default:
-					System.out.println("未知的模式，可能的模式：r/c/rc");
+					System.out.println("未知的模式，可能的模式：r/rc");
 					return;
 				}
 			} else {
@@ -43,13 +40,10 @@ public class Main {
 					ma.decrypt(buffer_2d, key, h, w);
 					break;
 				case "r":
-					ma.rowDecrypt_interface(buffer_2d, key, h, w);
-					break;
-				case "c":
-					ma.columnDecrypt_interface(buffer_2d, key, h, w);
+					ma.allRowDecrypt(buffer_2d, key, h, w);
 					break;
 				default:
-					System.out.println("未知的模式，可能的模式：r/c/rc");
+					System.out.println("未知的模式，可能的模式：r/rc");
 					return;
 				}
 			}
@@ -66,10 +60,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Boolean encrypt = true;
+		Boolean encrypt = false;
 		double key = 0.1;
 		File fi = null, fo = null;
-		String mode = "rc";
+		String mode = "r";
 		for (int i = 0; i < args.length; i++) {
 			switch (args[i]) {
 			case "-d":
@@ -80,7 +74,7 @@ public class Main {
 				break;
 			case "-k":
 				if (++i < args.length) {
-					key = Double.parseDouble(args[i]);
+					key = Double.valueOf(args[i]);
 				}
 				break;
 			case "-i":
@@ -102,11 +96,11 @@ public class Main {
 				System.out.println("安卓App picencript 的 java 移植版");
 				System.out.println("命令行参数:");
 				System.out.println("-e: 加密");
-				System.out.println("-d: 解密");
-				System.out.println("-k: 后面跟密钥");
+				System.out.println("-d: 解密（默认）");
+				System.out.println("-k: 后面跟密钥，默认0.1");
 				System.out.println("-i: 后面跟输入图片路径");
 				System.out.println("-o: 后面跟输出图片路径");
-				System.out.println("-m: 加密/解密模式，r/c/rc（行/列/行列），默认行列");
+				System.out.println("-m: 加密/解密模式，r/rc（行/行列），默认行");
 				System.out.println("-h: 打印帮助然后退出");
 				return;
 			}

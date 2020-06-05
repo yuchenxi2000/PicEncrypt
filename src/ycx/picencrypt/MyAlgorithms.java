@@ -62,6 +62,7 @@ public class MyAlgorithms {
 			}
 
 		}
+		
 		//行置乱算法
 		double rowEncrypt(int pixel[][], double x1, int i,int M, int N)
 		{
@@ -93,6 +94,39 @@ public class MyAlgorithms {
 			}
 			return logistic_array[N - 1];
 		}
+		
+		//行置乱算法
+		void allRowEncrypt(int pixel[][], double x1, int M, int N)
+		{
+			ArrayFunctions af=new ArrayFunctions();
+			//生成混沌序列
+			double logistic_array[] = new double[N] ;
+			produce_logisticArray(x1, logistic_array, N);
+			//建立值与下标映射的Map
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
+			produce_map(m, logistic_array, N);
+			//拷贝混沌序列
+			double temp_logArr[]=new double[N];
+			af.arr_copy(logistic_array, temp_logArr, N);
+
+			int address_array[]=new int[N];
+			//对混沌序列进行排序，采用选择，并且同时生产地址映射表
+			SelectSort(temp_logArr, N, m, address_array);
+			
+			for (int i = 0; i < M; ++i) {
+				int temp[]=new int[N];
+				for (int j = 0; j < N; ++j)
+				{
+					temp[address_array[j]] = pixel[i][j];
+				}
+				//正式解密原图
+				for (int j = 0; j < N; ++j)
+				{
+					pixel[i][j] = temp[j];
+				}
+			}
+		}
+		
 		//行置乱接口
 		void rowEncrypt_interface(int pixel[][], double x1, int M, int N)
 		{
@@ -197,6 +231,36 @@ public class MyAlgorithms {
 			}
 			return logistic_array[N - 1];
 		}
+		
+		void allRowDecrypt(int pixel[][], double x1, int M, int N) {
+			ArrayFunctions af=new ArrayFunctions();
+			//生成混沌序列
+			double logistic_array[]=new double[N];
+			produce_logisticArray(x1, logistic_array, N);
+			//建立值与下标映射的Map
+			HashMap<Double, Integer> m=new HashMap<Double, Integer>();  
+			produce_map(m, logistic_array, N);
+			//拷贝混沌序列
+			double temp_logArr[]=new double[N];
+			af.arr_copy(logistic_array, temp_logArr, N);
+			//比对排序后的序列与排序前的序列的
+			int address_array[]=new int[N];
+			//对混沌序列进行排序，采用选择，并且同时生产地址映射表
+			SelectSort(temp_logArr, N, m, address_array);
+			for (int i = 0; i < M; ++i) {
+				int temp[]=new int[N];
+				for (int j = 0; j < N; ++j)
+				{
+					temp[j] = pixel[i][address_array[j]];
+				}
+				//正式解密原图
+				for (int j = 0; j < N; ++j)
+				{
+					pixel[i][j] = temp[j];
+				}
+			}
+		}
+		
 		//行解密接口
 		void rowDecrypt_interface(int pixel[][], double x1, int M, int N)
 		{
